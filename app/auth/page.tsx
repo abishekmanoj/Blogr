@@ -12,10 +12,18 @@ import { Controller, useForm } from "react-hook-form"
 import { signInSchema, SignInValues, signUpSchema, SignUpValues } from "@/lib/validations/auth"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
+import { authClient } from "@/lib/auth-client"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
+import { useTransition } from "react"
+import { Loader2 } from "lucide-react"
 
 
 
 const AuthPage = () => {
+
+    const router = useRouter()
+    const[isPending, startTransition] = useTransition()
 
     const signInForm = useForm<SignInValues>({
         resolver: zodResolver(signInSchema),
@@ -27,12 +35,53 @@ const AuthPage = () => {
         defaultValues: { name: '', email: '', password: '', confirmPassword: ''}
     })
 
-    const onSignIn = () => {
+    const onSignIn = async (data: SignInValues) => {
+        startTransition(async () => {
+            try {
+                await authClient.signIn.email({
+                    email: data.email,
+                    password: data.password,
+                    fetchOptions: {
+                        onSuccess: () => {
+                            toast.success('Logged in', { position: "top-right"})
+                            router.push('/')
+                        },
+                        onError: (error) => {
+                            toast.error(error.error.message, { position: "top-right"})
+                            signInForm.clearErrors()
+                        }
+                }
+            })
 
+        } catch (error) {
+            console.log(error)
+        }
+        })
     }
 
-    const onSignUp = () => {
-
+    const onSignUp = (data: SignUpValues) => {
+        startTransition(async () => {
+            try {
+            await authClient.signUp.email({
+                name: data.name,
+                email: data.email,
+                password: data.password,
+                fetchOptions: {
+                    onSuccess: () => {
+                        toast.success('Account created Successfully', { position: "top-right"})
+                        router.push('/')
+                    },
+                    onError: (error) => {
+                        toast.error(error.error.message, { position: "top-right"})
+                        signInForm.clearErrors()
+                    }
+                }
+            
+            })
+            } catch (error) {
+                console.log(error)
+            }
+        })
     }
 
 
@@ -105,8 +154,8 @@ const AuthPage = () => {
                                         />
                                     </FieldGroup>
 
-                                    <Button className="w-full" type="submit">
-                                        Sign In
+                                    <Button className="w-full" type="submit" disabled={isPending}>
+                                        { isPending ? ( <><span> Signing in... </span> <Loader2 className="size-4 animate-spin" /> </>) : <span> Sign In</span>}
                                     </Button>
 
                                 </form>
@@ -127,7 +176,7 @@ const AuthPage = () => {
                                                         <FieldLabel> Name </FieldLabel>
                                                         <Input
                                                             id="signup-name"
-                                                            type="name"
+                                                            type="text"
                                                             placeholder="First Last"
                                                             aria-invalid={fieldState.invalid}
                                                             {...field}
@@ -174,7 +223,7 @@ const AuthPage = () => {
                                                         <Input
                                                             id="signup-password"
                                                             type="password"
-                                                            placeholder="Password"
+                                                            placeholder="********"
                                                             aria-invalid={fieldState.invalid}
                                                             {...field}
                                                         />
@@ -196,7 +245,7 @@ const AuthPage = () => {
                                                         <Input
                                                             id="signup-confirmPassword"
                                                             type="password"
-                                                            placeholder="Confirm Password"
+                                                            placeholder="********"
                                                             aria-invalid={fieldState.invalid}
                                                             {...field}
                                                         />
@@ -208,7 +257,7 @@ const AuthPage = () => {
                                     </FieldGroup>
 
                                     <Button className="w-full" type="submit">
-                                        Signup
+                                        { isPending ? ( <> <span> Signing up... </span> <Loader2 className="size-4 animate-spin" /> </>) : <span> Sign Up</span>}
                                     </Button>
                                     
                                 </form>

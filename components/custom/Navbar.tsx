@@ -3,8 +3,13 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "./ThemeToggle"
+import { useConvexAuth } from "convex/react"
+import { authClient } from "@/lib/auth-client"
 
 export default function Navbar() {
+
+  const {isAuthenticated, isLoading} = useConvexAuth()
+
   return (
     <nav className="w-full border-b bg-background">
       <div className="mx-auto flex h-16 items-center justify-between px-6">
@@ -26,25 +31,38 @@ export default function Navbar() {
             Blogs
           </Link>
 
-          <Link href="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            About
+          <Link href="/create" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            Create
           </Link>
         </div>
 
         {/* Right - Auth Buttons */}
-        <div className="flex items-center gap-3">
-          <Link href="/auth">
-            <Button variant="ghost" size="sm">
-              Login
-            </Button>
-          </Link>
-          <Link href="/auth">
-            <Button size="sm">
-              Sign Up
-            </Button>
-          </Link>
-          <ThemeToggle />
-        </div>
+        { isLoading ? null : isAuthenticated ? (
+          
+          <div className="flex items-center gap-3">
+            <Link href="/auth">
+              <Button variant="ghost" size="sm" onClick={() => { authClient.signOut({ })}}>
+                Logout
+              </Button>
+            </Link>
+            <ThemeToggle />
+          </div>
+        ) : (
+          <div className="flex items-center gap-3">
+            <Link href="/auth">
+              <Button variant="ghost" size="sm">
+                Login
+              </Button>
+            </Link>
+            <Link href="/auth">
+              <Button size="sm">
+                Sign Up
+              </Button>
+            </Link>
+            <ThemeToggle />
+          </div>
+
+        )}
       </div>
     </nav>
   )
