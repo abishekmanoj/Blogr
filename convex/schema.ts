@@ -7,9 +7,5 @@ export default defineSchema({
     excerpt: v.string(),
     content: v.string(),
     authorId: v.string()
-  }),
-  users: defineTable({
-    name: v.string(),
-    tokenIdentifier: v.string(),
-  }).index("by_token", ["tokenIdentifier"]),
+  })
 });
