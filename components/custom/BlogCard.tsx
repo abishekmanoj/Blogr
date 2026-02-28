@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 
-export default function BlogCard({ id, title, excerpt, }: { id: string, title: string, excerpt: string }) {
+export default function BlogCard({ id, title, excerpt, image }: { id: string, title: string, excerpt: string, image: string | null }) {
 
   const imgSeed = encodeURIComponent(title.slice(0, 40) || "blog")
 
@@ -11,7 +11,7 @@ export default function BlogCard({ id, title, excerpt, }: { id: string, title: s
       <Card className="group h-full overflow-hidden shadow-2xs transition hover:shadow-sm">
         <div className="relative h-44 w-full">
           <Image
-            src={`https://picsum.photos/seed/${imgSeed}/800/500`}
+            src={image ?? `https://picsum.photos/seed/${imgSeed}/800/500` }
             alt={title}
             fill
             className="object-cover"

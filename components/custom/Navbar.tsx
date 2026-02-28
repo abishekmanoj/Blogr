@@ -27,7 +27,7 @@ export default function Navbar() {
             Home
           </Link>
 
-          <Link href="/blog" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <Link href="/blogs" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             Blogs
           </Link>
 

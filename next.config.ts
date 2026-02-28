@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "picsum.photos",
       },
+      {
+        protocol: "https",
+        hostname: "dutiful-retriever-974.eu-west-1.convex.cloud",
+      },
     ],
   },
 };

@@ -31,6 +31,7 @@ export default async function BlogsPage() {
                 id={post._id}
                 title={post.title}
                 excerpt={post.excerpt}
+                image={post.imageUrl}
               />
             ))}
           </div>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useTransition } from "react"
+import { useState, useTransition } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -22,10 +22,11 @@ export default function CreatePage() {
   const[isPending, startTransition] = useTransition()
   const mutation = useMutation(api.posts.createPost)
   const router = useRouter()
+  const [preview, setPreview] = useState<string | null>(null)
 
   const form = useForm<CreatePostValues>({
     resolver: zodResolver(createPostSchema),
-    defaultValues: { title: "", excerpt: "", content: "" },
+    defaultValues: { title: "", excerpt: "", content: "", image: undefined },
   })
 
   const onSubmit = (data: CreatePostValues) => {
@@ -122,6 +123,33 @@ export default function CreatePage() {
                   )}
                 />
               </FieldGroup>
+
+              <FieldGroup>
+                <Controller
+                  name="image"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field>
+                      <FieldLabel>Featured Image</FieldLabel>
+
+                      <Input
+                        id="post-image"
+                        type="file"
+                        accept="image/*"
+                        aria-invalid={fieldState.invalid}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0] ?? null
+                          field.onChange(file)
+                        }}
+                      />
+
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+
+              
 
               <Button className="w-full" type="submit" disabled={isPending}>
                 { isPending ? ( <><span> Creating post... </span> <Loader2 className="size-4 animate-spin" /> </>) : <span> Create Post </span>}
