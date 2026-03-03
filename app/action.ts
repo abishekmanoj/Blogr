@@ -50,7 +50,7 @@ export async function createBlogAction(data: CreatePostValues) {
     }
   }
 
-  redirect("/")
+  redirect("/blogs")
    
 }
 
