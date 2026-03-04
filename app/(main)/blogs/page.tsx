@@ -3,10 +3,11 @@ import { api } from "@/convex/_generated/api"
 import { Card, CardContent} from "@/components/ui/card"
 import BlogCard from "@/components/custom/BlogCard"
 
-export const dynamic = "force-static"
+export const dynamic = "force-static";
+export const revalidate = 30;
 
 export default async function BlogsPage() {
-    
+
   const posts = await fetchQuery(api.posts.getPosts, {})
 
   return (

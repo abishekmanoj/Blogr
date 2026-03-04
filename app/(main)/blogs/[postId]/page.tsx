@@ -1,5 +1,5 @@
 
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { fetchQuery } from "convex/nextjs"
@@ -26,9 +26,15 @@ export default async function PostPage({ params }: PageProps) {
     const post = await fetchQuery(api.posts.getPostById, { postId})
     const userId = await fetchQuery(api.presence.getUserId, {}, { token })
 
+    if (!userId) {
+        return redirect('/auth')
+    }
+
     if (!post) {
         return notFound()
     }
+
+
     const imageSrc = post.imageUrl || "https://fastly.picsum.photos/id/24/4855/1803.jpg?hmac=ICVhP1pUXDLXaTkgwDJinSUS59UWalMxf4SOIWb9Ui4"
 
     return (
