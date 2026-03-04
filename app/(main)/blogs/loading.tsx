@@ -10,7 +10,7 @@ const LoadingBlog = () => {
         </div>
 
         <div className="mx-auto mt-8 flex w-full max-w-6xl flex-wrap gap-6">
-          {Array.from({ length: 3 }).map((_, i) => (
+          {Array.from({ length: 6 }).map((_, i) => (
             <Card
               key={i}
               className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.33%-16px)] shadow-2xs"

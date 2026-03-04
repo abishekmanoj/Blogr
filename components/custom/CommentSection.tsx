@@ -73,11 +73,11 @@ export default function CommentsSection() {
             No comments yet. Be the first to comment.
           </p>
         ) : (
-          comments.map((c, index) => (
+          comments.map((c) => (
             <div key={c._id}>
               <div className="flex gap-3">
                 
-                {/* Avatar */}
+        
                 <div className="shrink-0">
                   <div className="h-9 w-9 rounded-full bg-muted flex items-center justify-center text-sm font-medium">
                     {c.authorName
@@ -86,7 +86,6 @@ export default function CommentsSection() {
                   </div>
                 </div>
 
-                {/* Comment Content */}
                 <div className="flex-1">
                   <div className="rounded-2xl bg-muted px-4 py-3 flex justify-between">
                     <div className="space-y-2">
@@ -116,7 +115,6 @@ export default function CommentsSection() {
 
       <Separator />
 
-      {/* Form */}
       <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
         <FieldGroup>
           <Controller

@@ -1,3 +1,4 @@
+
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
@@ -8,18 +9,22 @@ import { ArrowLeft } from "lucide-react"
 import { Id } from "@/convex/_generated/dataModel"
 import { Separator } from "@/components/ui/separator"
 import CommentSection from "@/components/custom/CommentSection"
+import PostPresence from "@/components/custom/PostPresence"
+import { getToken } from "@/lib/auth-server"
 
 interface PageProps {
   params: Promise<{
     postId: Id<'posts'>
   }>
 }
-
+ 
 export default async function PostPage({ params }: PageProps) {
 
     const { postId } = await params
+    const token = await getToken()
 
     const post = await fetchQuery(api.posts.getPostById, { postId})
+    const userId = await fetchQuery(api.presence.getUserId, {}, { token })
 
     if (!post) {
         return notFound()
@@ -62,10 +67,14 @@ export default async function PostPage({ params }: PageProps) {
                     {post.excerpt}
                 </p>
 
-                {/* Posted On */}
-                <p className="text-sm text-muted-foreground">
-                    Posted on: {new Date(post._creationTime).toLocaleDateString(undefined, {day: 'numeric', month: 'numeric', year: 'numeric'})}
-                </p>
+                {/* Posted On and Online list */}
+                <div className="flex justify-between items-center">
+                    <p className="text-sm text-muted-foreground">
+                        Posted on: {new Date(post._creationTime).toLocaleDateString(undefined, {day: 'numeric', month: 'numeric', year: 'numeric'})}
+                    </p>
+
+                    {userId && <PostPresence roomId={postId} userId={userId} />}
+                </div>
 
                 <Separator className="my-8" />
 
@@ -77,9 +86,9 @@ export default async function PostPage({ params }: PageProps) {
                 <Separator className="my-8" />
 
                 <CommentSection />
-
                 
             </div>
+
         </div>
     )
     }
