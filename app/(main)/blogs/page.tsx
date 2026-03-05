@@ -2,6 +2,7 @@ import { fetchQuery } from "convex/nextjs"
 import { api } from "@/convex/_generated/api"
 import { Card, CardContent} from "@/components/ui/card"
 import BlogCard from "@/components/custom/BlogCard"
+import PostSearch from "@/components/custom/PostSearch";
 
 export const dynamic = "force-static";
 export const revalidate = 30;
@@ -17,6 +18,9 @@ export default async function BlogsPage() {
         <p className="text-sm text-muted-foreground">
           Read what others have shared. Fresh ideas, short notes, and deep dives.
         </p>
+        <div className="pt-4">
+          <PostSearch />
+        </div>
       </div>
 
       <div className="mx-auto mt-8 w-full max-w-6xl">
