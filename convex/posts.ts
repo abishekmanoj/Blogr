@@ -63,3 +63,21 @@ export const getPostById = query({
 
   },
 })
+
+
+export const deletePost = mutation({
+  args: { postId: v.id("posts") },
+  handler: async (ctx, { postId }) => {
+    const user = await authComponent.safeGetAuthUser(ctx)
+    if (!user) throw new ConvexError("Unauthorized")
+
+    const post = await ctx.db.get(postId)
+    if (!post) throw new ConvexError("Post not found")
+
+    if (post.authorId !== user._id) {
+      throw new ConvexError("Not allowed")
+    }
+
+    await ctx.db.delete(postId)
+  },
+})

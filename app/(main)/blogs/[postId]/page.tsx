@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator"
 import CommentSection from "@/components/custom/CommentSection"
 import PostPresence from "@/components/custom/PostPresence"
 import { getToken } from "@/lib/auth-server"
+import DeletePostButton from "@/components/custom/DeleteButton"
 
 interface PageProps {
   params: Promise<{
@@ -69,9 +70,14 @@ export default async function PostPage({ params }: PageProps) {
                 </h1>
 
                 {/* Excerpt */}
-                <p className="text-white text-md">
-                    {post.excerpt}
-                </p>
+                <div className="flex justify-between items-center">
+                    <p className="text-white text-md">
+                        {post.excerpt}
+                    </p>
+                    {userId === post.authorId && (
+                        <DeletePostButton postId={postId} />
+                    )}
+                </div>
 
                 {/* Posted On and Online list */}
                 <div className="flex justify-between items-center">
