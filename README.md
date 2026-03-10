@@ -1,4 +1,4 @@
-# FlowFix
+# Blogr
 
 Blogr is a modern, full stack blogging platform built with Next.js App Router, Convex, and Better Auth. It provides a clean interface for writing, publishing, searching, and interacting with blog posts in real time.The project is designed with scalable architecture, real-time capabilities, and production-ready full stack patterns in mind.
 
@@ -41,7 +41,7 @@ Blogr is a modern, full stack blogging platform built with Next.js App Router, C
 - ESLint
 - PostCSS
 
-## Running UTXCoin
+## Running Blogr
 1. Install dependencies:
 ``` npm install ```
    
